@@ -14,13 +14,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import com.example.study.rhino.R;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 
-import de.hfs.rhino.storage.CoordinateStorage;
+import hfs.de.rhinov2.R;
+import hfs.de.rhinov2.storage.CoordinateStorage;
 
 public class StartActivity extends AppCompatActivity {
 
@@ -96,6 +96,5 @@ public class StartActivity extends AppCompatActivity {
 
         Location location = mLocationManager.getLastKnownLocation(bestProvider);
         autocompleteFragment.setText(location.getLatitude()+"");
-
     }
 }

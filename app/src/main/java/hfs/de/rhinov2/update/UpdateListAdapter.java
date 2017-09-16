@@ -7,11 +7,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.study.rhino.R;
-
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
+
+import hfs.de.rhinov2.R;
 
 public class UpdateListAdapter extends RecyclerView.Adapter<UpdateListAdapter.ViewHolder> {
 

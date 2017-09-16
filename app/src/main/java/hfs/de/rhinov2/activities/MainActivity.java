@@ -10,7 +10,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.study.rhino.R;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -21,10 +20,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import de.hfs.rhino.storage.CoordinateStorage;
-import de.hfs.rhino.updater.Update;
-import de.hfs.rhino.updater.UpdateListAdapter;
-import de.hfs.rhino.updater.UpdateRESTService;
+import hfs.de.rhinov2.R;
+import hfs.de.rhinov2.storage.CoordinateStorage;
+import hfs.de.rhinov2.update.Update;
+import hfs.de.rhinov2.update.UpdateListAdapter;
+import hfs.de.rhinov2.update.UpdateRESTService;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
