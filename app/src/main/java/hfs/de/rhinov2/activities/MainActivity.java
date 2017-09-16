@@ -81,6 +81,16 @@ public class MainActivity extends AppCompatActivity implements UpdateListAdapter
             }
         });
 
+        Button switchCity = (Button) findViewById(R.id.switchCity);
+        switchCity.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                Intent startActivity = new Intent(MainActivity.this, StartActivity.class);
+                startActivity(startActivity);
+            }
+        });
+
     }
 
     private void listUpdateButtonClicked() {
