@@ -11,7 +11,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -36,11 +35,13 @@ public class MainActivity extends AppCompatActivity implements UpdateListAdapter
 
     private static final String BASE_URL = "http://pi@172.31.1.15/rhino/";
     // List adapter
-    private LatLng coordinates;
     private UpdateListAdapter mAdapter;
 
     // Location locationUpdateButton
     private EditText cityLabel;
+
+    private SingletonStorage STORAGE = SingletonStorage.getInstance();
+
 
     SingletonStorage STORAGE = SingletonStorage.getInstance();
 
@@ -57,12 +58,8 @@ public class MainActivity extends AppCompatActivity implements UpdateListAdapter
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        coordinates = STORAGE.getCoordinates();
-        longitudeLabel = (EditText) findViewById(R.id.longitudeLabel);
-        latitudeLabel = (EditText) findViewById(R.id.latitudeLabel);
-        if (coordinates != null) {
-            cityLabel.setText(String.format("Longitude: %s", coordinates.longitude));
-        }
+        cityLabel = (EditText) findViewById(R.id.cityLabel);
+        cityLabel.setText(STORAGE.getCity());
 
         // Create recycler view
         RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.mainRView);
@@ -101,6 +98,7 @@ public class MainActivity extends AppCompatActivity implements UpdateListAdapter
 
             @Override
             public void onClick(View view) {
+                StartActivity.deletePreferences();
                 Intent startActivity = new Intent(MainActivity.this, StartActivity.class);
                 startActivity(startActivity);
             }
