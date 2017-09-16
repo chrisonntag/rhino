@@ -40,7 +40,7 @@ public class StartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
 
-        if (preferences.contains("City") && preferences.contains("Latitude") &&preferences.contains("Longitude")) {
+        if (preferences != null && preferences.contains("City") && preferences.contains("Latitude") && preferences.contains("Longitude")) {
             store.setCity(preferences.getString("City", null));
             store.setLng((double) preferences.getFloat("Longitude", 0.0f));
             store.setLat((double) preferences.getFloat("Latitude", 0.0f));
@@ -107,9 +107,10 @@ public class StartActivity extends AppCompatActivity {
     }
 
     public static void deletePreferences() {
-        //SharedPreferences toDelete = preferences.getSharedPreferences(prefpath, Context.MODE_PRIVATE);
-        //toDelete.edit().clear().commit();
-        preferences.edit().clear().commit();
+
+        if (preferences != null) {
+            preferences.edit().clear().commit();
+        }
     }
 
     /*public void getLocation() throws IOException {
