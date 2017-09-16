@@ -1,16 +1,8 @@
 package hfs.de.rhinov2.activities;
 
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.location.Address;
-import android.location.Criteria;
-import android.location.Geocoder;
-import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -20,11 +12,6 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
-import com.google.android.gms.maps.*;
-
-import java.io.IOException;
-import java.util.List;
-import java.util.Locale;
 
 import hfs.de.rhinov2.R;
 import hfs.de.rhinov2.storage.SingletonStorage;
@@ -78,7 +65,7 @@ public class StartActivity extends AppCompatActivity {
         set.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (CoordinateStorage.coordinates != null) {
+                if (SingletonStorage.getInstance().getCoordinates() != null) {
                     Intent mainActivity = new Intent(StartActivity.this, MainActivity.class);
                     startActivity(mainActivity);
                 }
