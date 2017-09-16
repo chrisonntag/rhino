@@ -36,24 +36,18 @@ public class MainActivity extends AppCompatActivity implements UpdateListAdapter
 
     private static final String BASE_URL = "http://pi@172.31.1.15:5000/de.hfs.rhino/";
     // List adapter
-    private LatLng coordinates;
     private UpdateListAdapter mAdapter;
 
     // Location locationUpdateButton
-    private EditText longitudeLabel;
-    private EditText latitudeLabel;
+    private EditText cityLabel;
+    private SingletonStorage store = SingletonStorage.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        coordinates = SingletonStorage.getInstance().getCoordinates();
-        longitudeLabel = (EditText) findViewById(R.id.longitudeLabel);
-        latitudeLabel = (EditText) findViewById(R.id.latitudeLabel);
-        if (coordinates != null) {
-            longitudeLabel.setText(String.format("Longitude: %s", coordinates.longitude));
-            latitudeLabel.setText(String.format("Latitude: %s", coordinates.latitude));
-        }
+        cityLabel = (EditText) findViewById(R.id.cityLabel);
+        cityLabel.setText(store.getCity());
 
         // Create recycler view
         RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.mainRView);
@@ -87,9 +81,6 @@ public class MainActivity extends AppCompatActivity implements UpdateListAdapter
             }
         });
 
-
-        longitudeLabel = (EditText) findViewById(R.id.longitudeLabel);
-        latitudeLabel = (EditText) findViewById(R.id.latitudeLabel);
     }
 
     private void listUpdateButtonClicked() {
@@ -101,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements UpdateListAdapter
                 .build();
         UpdateRESTService service = retrofit.create(UpdateRESTService.class);
 
-        Call<JsonObject> updates = service.getUpdates(coordinates.longitude, coordinates.latitude);
+        Call<JsonObject> updates = service.getUpdates(store.getLng(), store.getLat());
         updates.enqueue(new Callback<JsonObject>() {
 
             @Override

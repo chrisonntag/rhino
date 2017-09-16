@@ -32,6 +32,7 @@ public class StartActivity extends AppCompatActivity {
     public final String prefpath = "myPrefernces";
     SharedPreferences preferences;
     private Button set;
+    private SingletonStorage store = SingletonStorage.getInstance();
 
 
     @Override
@@ -46,9 +47,9 @@ public class StartActivity extends AppCompatActivity {
             public void onPlaceSelected(Place place) {
                 // TODO: Get info about the selected place.
                 autocompleteFragment.setText(place.getName());
-                SingletonStorage.getInstance().setCity(place.getName().toString());
-                SingletonStorage.getInstance().setLat(place.getLatLng().latitude);
-                SingletonStorage.getInstance().setLng(place.getLatLng().longitude);
+                store.setCity(place.getName().toString());
+                store.setLat(place.getLatLng().latitude);
+                store.setLng(place.getLatLng().longitude);
                 Log.i(TAG, "Place: " + place.getName());
             }
 
@@ -78,17 +79,21 @@ public class StartActivity extends AppCompatActivity {
         set.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (SingletonStorage.getInstance().getCity() != null) {
+                if (store.getCity() != null) {
                     SharedPreferences.Editor editor = preferences.edit();
-                    editor.putString("Stadt", SingletonStorage.getInstance().getCity());
-                    editor.putFloat("Latidude", (float) SingletonStorage.getInstance().getLat());
-                    editor.putFloat("Longitude", (float) SingletonStorage.getInstance().getLng());
+                    editor.putString("Stadt", store.getCity());
+                    editor.putFloat("Latidude", (float)store.getLat());
+                    editor.putFloat("Longitude", (float) store.getLng());
                     editor.commit();
-                    Intent mainActivity = new Intent(StartActivity.this, MainActivity.class);
-                    startActivity(mainActivity);
+                    changeActivity();
                 }
             }
         });
+    }
+
+    private void changeActivity(){
+        Intent mainActivity = new Intent(StartActivity.this, MainActivity.class);
+        startActivity(mainActivity);
     }
 
     /*public void getLocation() throws IOException {

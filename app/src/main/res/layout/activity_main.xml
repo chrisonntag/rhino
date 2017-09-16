@@ -27,25 +27,13 @@
         android:layout_marginRight="8dp">
 
         <EditText
-            android:id="@+id/latitudeLabel"
+            android:id="@+id/cityLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="9dp"
             android:layout_marginStart="9dp"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="Latitude:"
-            android:textAppearance="@style/TextAppearance.AppCompat" />
-
-        <EditText
-            android:id="@+id/longitudeLabel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="9dp"
-            android:layout_marginStart="9dp"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:text="Longitude:"
             android:textAppearance="@style/TextAppearance.AppCompat" />
 
         <android.support.v7.widget.RecyclerView
