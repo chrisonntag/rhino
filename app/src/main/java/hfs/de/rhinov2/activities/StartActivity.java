@@ -4,7 +4,9 @@ package hfs.de.rhinov2.activities;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Address;
 import android.location.Criteria;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -18,6 +20,11 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
+import com.google.android.gms.maps.*;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 
 import hfs.de.rhinov2.R;
 import hfs.de.rhinov2.storage.CoordinateStorage;
@@ -26,7 +33,7 @@ public class StartActivity extends AppCompatActivity {
 
     private static final String TAG = "StartActivity";
     private PlaceAutocompleteFragment autocompleteFragment;
-    private Button locate;
+    //private Button locate;
     private Button set;
 
 
@@ -55,25 +62,31 @@ public class StartActivity extends AppCompatActivity {
 
         });
 
-        locate = (Button) findViewById(R.id.button4);
-        locate.setOnClickListener(new View.OnClickListener() {
+        //locate = (Button) findViewById(R.id.button4);
+        /*locate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getLocation();
+                try {
+                    getLocation();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
-        });
+        });*/
 
         set = (Button) findViewById(R.id.set);
         set.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent mainActivity = new Intent(StartActivity.this, MainActivity.class);
-                startActivity(mainActivity);
+                if (CoordinateStorage.coordinates != null) {
+                    Intent mainActivity = new Intent(StartActivity.this, MainActivity.class);
+                    startActivity(mainActivity);
+                }
             }
         });
     }
 
-    public void getLocation(){
+    /*public void getLocation() throws IOException {
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
@@ -90,11 +103,16 @@ public class StartActivity extends AppCompatActivity {
         Criteria criteria = new Criteria();
         criteria.setAccuracy(Criteria.ACCURACY_COARSE);
         String bestProvider = mLocationManager.getBestProvider(criteria, true);
-        if(bestProvider == null){
-            autocompleteFragment.setText("location not found");
+        if (bestProvider == null) {
+            autocompleteFragment.setText("no location found");
         }
 
         Location location = mLocationManager.getLastKnownLocation(bestProvider);
-        autocompleteFragment.setText(location.getLatitude()+"");
-    }
+        Geocoder gc = new Geocoder(this, Locale.getDefault());
+        set.setText(gc.isPresent()+"");
+        List<Address> currentPlace = gc.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+        set.setText(currentPlace.size());
+        CoordinateStorage.setCoordinates(location.getLatitude(), location.getLongitude());
+        autocompleteFragment.setText(currentPlace.get(0).getLocale().toString());
+    }*/
 }

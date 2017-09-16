@@ -8,4 +8,8 @@ import com.google.android.gms.maps.model.LatLng;
 
 public final class CoordinateStorage {
     public static LatLng coordinates;
+
+    public static void setCoordinates(double lat, double lng) {
+        coordinates = new LatLng(lat, lng);
+    }
 }
