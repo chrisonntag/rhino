@@ -1,7 +1,5 @@
 package hfs.de.rhinov2.storage;
 
-import com.google.android.gms.maps.model.LatLng;
-
 import java.util.List;
 
 import lombok.Getter;
@@ -15,10 +13,6 @@ import lombok.Setter;
 @Getter
 public class SingletonStorage {
     // coords
-    private double lat;
-    private double lng;
-    private String city;
-
     private double lat;
     private double lng;
     private String city;
