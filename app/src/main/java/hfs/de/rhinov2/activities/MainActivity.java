@@ -1,5 +1,6 @@
 package hfs.de.rhinov2.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
@@ -49,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements UpdateListAdapter
         coordinates = CoordinateStorage.coordinates;
         longitudeLabel = (EditText) findViewById(R.id.longitudeLabel);
         latitudeLabel = (EditText) findViewById(R.id.latitudeLabel);
-        if(coordinates != null) {
+        if (coordinates != null) {
             longitudeLabel.setText(String.format("Longitude: %s", coordinates.longitude));
             latitudeLabel.setText(String.format("Latitude: %s", coordinates.latitude));
         }
@@ -94,7 +95,6 @@ public class MainActivity extends AppCompatActivity implements UpdateListAdapter
     private void listUpdateButtonClicked() {
         mAdapter.removeLast();
 
-        final MainActivity thisActivity = this;
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements UpdateListAdapter
                     mAdapter.clear();
                     JsonArray alerts = response.body().getAsJsonArray("alerts");
                     Iterator<JsonElement> iterator = alerts.iterator();
-                    while(iterator.hasNext()){
+                    while (iterator.hasNext()) {
                         JsonElement element = iterator.next();
                         System.out.println(element.toString());
                         String title = element.getAsJsonObject().get("event_desc").getAsString();
@@ -126,7 +126,7 @@ public class MainActivity extends AppCompatActivity implements UpdateListAdapter
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
-                Toast.makeText(thisActivity, String.format("Update %s", "FAIL"), Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, String.format("Update %s", "FAIL"), Toast.LENGTH_SHORT).show();
 
             }
 
@@ -135,7 +135,8 @@ public class MainActivity extends AppCompatActivity implements UpdateListAdapter
 
     @Override
     public void onItemClick(View view, int position) throws IOException {
-        Toast.makeText(this, "You clicked " + mAdapter.getItem(position) + " on row number " + position, Toast.LENGTH_SHORT).show();
+        Intent detailActivity = new Intent(MainActivity.this, DetailActivity.class);
+        startActivity(detailAcytivity);
 
     }
 }
