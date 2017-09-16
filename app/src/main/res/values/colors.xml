@@ -3,4 +3,9 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="colorSeverity1">#00FF00</color>
+    <color name="colorSeverity2">#FFFF00</color>
+    <color name="colorSeverity3">#FF0000</color>
+    <color name="colorSeverity4">#CC00CC</color>
+    <color name="colorSeverityUnknown">#FFFFFF</color>
 </resources>

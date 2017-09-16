@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements UpdateListAdapter
 
         // Add sample data
         List<Update> data = new ArrayList<>();
-        data.add(new Update("No danger yet", "Set your location and press update"));
+        data.add(new Update("No danger yet", "Set your location and press update", R.color.colorSeverityUnknown));
         mAdapter = new UpdateListAdapter(this, data);
 
         mAdapter.setClickListener(this);
@@ -121,7 +121,28 @@ public class MainActivity extends AppCompatActivity implements UpdateListAdapter
                         System.out.println(element.toString());
                         String title = element.get("event_desc").getAsString();
                         String instructions = element.getAsJsonObject().get("instructions").getAsJsonArray().get(0).getAsString();
-                        mAdapter.add(new Update(title, instructions));
+                        Integer severity = element.get("severity_level").getAsInt();
+                        assert (severity > 0 && severity < 6);
+                        int color = R.color.colorSeverityUnknown;
+                        switch (severity) {
+                            case 1:
+                                color = R.color.colorSeverity1;
+                                break;
+                            case 2:
+                                color = R.color.colorSeverity2;
+                                break;
+                            case 3:
+                                color = R.color.colorSeverity3;
+                                break;
+                            case 4:
+                                color = R.color.colorSeverity4;
+                                break;
+                            case 5:
+                            default:
+                                System.out.println("unknown severity!");
+
+                        }
+                        mAdapter.add(new Update(title, instructions, color));
                     }
                 } else {
                     mAdapter.setEmpty();
@@ -138,7 +159,7 @@ public class MainActivity extends AppCompatActivity implements UpdateListAdapter
 
     @Override
     public void onItemClick(View view, int position) throws IOException {
-        if(alerts != null){
+        if (alerts != null) {
             Intent detailActivity = new Intent(MainActivity.this, DetailActivity.class);
             JsonObject element = alerts.get(position).getAsJsonObject();
 
