@@ -34,7 +34,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity implements UpdateListAdapter.ItemClickListener {
 
-    private static final String BASE_URL = "http://pi@172.31.1.15:5000/de.hfs.rhino/";
+    private static final String BASE_URL = "http://pi@172.31.1.15/rhino/";
     // List adapter
     private LatLng coordinates;
     private UpdateListAdapter mAdapter;
@@ -43,11 +43,22 @@ public class MainActivity extends AppCompatActivity implements UpdateListAdapter
     private EditText longitudeLabel;
     private EditText latitudeLabel;
 
+    SingletonStorage STORAGE = SingletonStorage.getInstance();
+
+    // rest calls
+    Retrofit retrofit = new Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build();
+    UpdateRESTService service = retrofit.create(UpdateRESTService.class);
+
+    JsonArray alerts;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        coordinates = SingletonStorage.getInstance().getCoordinates();
+        coordinates = STORAGE.getCoordinates();
         longitudeLabel = (EditText) findViewById(R.id.longitudeLabel);
         latitudeLabel = (EditText) findViewById(R.id.latitudeLabel);
         if (coordinates != null) {
@@ -93,15 +104,8 @@ public class MainActivity extends AppCompatActivity implements UpdateListAdapter
     }
 
     private void listUpdateButtonClicked() {
-        mAdapter.removeLast();
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        UpdateRESTService service = retrofit.create(UpdateRESTService.class);
-
-        Call<JsonObject> updates = service.getUpdates(coordinates.longitude, coordinates.latitude);
+        Call<JsonObject> updates = service.getUpdates(coordinates.latitude, coordinates.longitude);
         updates.enqueue(new Callback<JsonObject>() {
 
             @Override
@@ -110,17 +114,18 @@ public class MainActivity extends AppCompatActivity implements UpdateListAdapter
                 boolean endangered = response.body().get("endangered").getAsBoolean();
                 if (endangered) {
                     mAdapter.clear();
-                    JsonArray alerts = response.body().getAsJsonArray("alerts");
+                    alerts = response.body().getAsJsonArray("alerts");
                     Iterator<JsonElement> iterator = alerts.iterator();
                     while (iterator.hasNext()) {
-                        JsonElement element = iterator.next();
+                        JsonObject element = iterator.next().getAsJsonObject();
                         System.out.println(element.toString());
-                        String title = element.getAsJsonObject().get("event_desc").getAsString();
+                        String title = element.get("event_desc").getAsString();
                         String instructions = element.getAsJsonObject().get("instructions").getAsJsonArray().get(0).getAsString();
                         mAdapter.add(new Update(title, instructions));
                     }
                 } else {
                     mAdapter.setEmpty();
+                    alerts = null;
                 }
             }
 
@@ -133,8 +138,20 @@ public class MainActivity extends AppCompatActivity implements UpdateListAdapter
 
     @Override
     public void onItemClick(View view, int position) throws IOException {
-        Intent detailActivity = new Intent(MainActivity.this, DetailActivity.class);
+        if(alerts != null){
+            Intent detailActivity = new Intent(MainActivity.this, DetailActivity.class);
+            JsonObject element = alerts.get(position).getAsJsonObject();
 
-        startActivity(detailActivity);
+            STORAGE.setThreatArea(element.get("area_name").getAsString());
+            //STORAGE.setThreatCategories(element.get("categories").getAgetAsString());
+            STORAGE.setThreatDesc(element.get("event_desc").getAsString());
+            STORAGE.setThreatArea(element.get("area_name").getAsString());
+            STORAGE.setThreatArea(element.get("area_name").getAsString());
+            STORAGE.setThreatArea(element.get("area_name").getAsString());
+            STORAGE.setThreatArea(element.get("area_name").getAsString());
+            STORAGE.setThreatArea(element.get("area_name").getAsString());
+
+            startActivity(detailActivity);
+        }
     }
 }
