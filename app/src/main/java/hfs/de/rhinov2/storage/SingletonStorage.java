@@ -15,7 +15,9 @@ import lombok.Setter;
 @Getter
 public class SingletonStorage {
     // coords
-    private LatLng coordinates;
+    private double lat;
+    private double lng;
+    private String city;
 
     // threat data
     private String threatArea;
@@ -26,6 +28,7 @@ public class SingletonStorage {
     private String threatType;
     private String threatSeverity;
     private String threatSource;
+
 
     private static final SingletonStorage storageInstance = new SingletonStorage();
 

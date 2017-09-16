@@ -1,7 +1,15 @@
 package hfs.de.rhinov2.activities;
 
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Criteria;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -21,6 +29,8 @@ public class StartActivity extends AppCompatActivity {
     private static final String TAG = "StartActivity";
     private PlaceAutocompleteFragment autocompleteFragment;
     //private Button locate;
+    public final String prefpath = "myPrefernces";
+    SharedPreferences preferences;
     private Button set;
 
 
@@ -36,7 +46,9 @@ public class StartActivity extends AppCompatActivity {
             public void onPlaceSelected(Place place) {
                 // TODO: Get info about the selected place.
                 autocompleteFragment.setText(place.getName());
-                SingletonStorage.getInstance().setCoordinates(place.getLatLng());
+                SingletonStorage.getInstance().setCity(place.getName().toString());
+                SingletonStorage.getInstance().setLat(place.getLatLng().latitude);
+                SingletonStorage.getInstance().setLng(place.getLatLng().longitude);
                 Log.i(TAG, "Place: " + place.getName());
             }
 
@@ -61,11 +73,17 @@ public class StartActivity extends AppCompatActivity {
             }
         });*/
 
+        preferences = getSharedPreferences(prefpath, Context.MODE_PRIVATE);
         set = (Button) findViewById(R.id.set);
         set.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (SingletonStorage.getInstance().getCoordinates() != null) {
+                if (SingletonStorage.getInstance().getCity() != null) {
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putString("Stadt", SingletonStorage.getInstance().getCity());
+                    editor.putFloat("Latidude", (float) SingletonStorage.getInstance().getLat());
+                    editor.putFloat("Longitude", (float) SingletonStorage.getInstance().getLng());
+                    editor.commit();
                     Intent mainActivity = new Intent(StartActivity.this, MainActivity.class);
                     startActivity(mainActivity);
                 }
