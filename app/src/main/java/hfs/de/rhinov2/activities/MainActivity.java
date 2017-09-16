@@ -40,8 +40,7 @@ public class MainActivity extends AppCompatActivity implements UpdateListAdapter
     private UpdateListAdapter mAdapter;
 
     // Location locationUpdateButton
-    private EditText longitudeLabel;
-    private EditText latitudeLabel;
+    private EditText cityLabel;
 
     SingletonStorage STORAGE = SingletonStorage.getInstance();
 
@@ -62,8 +61,7 @@ public class MainActivity extends AppCompatActivity implements UpdateListAdapter
         longitudeLabel = (EditText) findViewById(R.id.longitudeLabel);
         latitudeLabel = (EditText) findViewById(R.id.latitudeLabel);
         if (coordinates != null) {
-            longitudeLabel.setText(String.format("Longitude: %s", coordinates.longitude));
-            latitudeLabel.setText(String.format("Latitude: %s", coordinates.latitude));
+            cityLabel.setText(String.format("Longitude: %s", coordinates.longitude));
         }
 
         // Create recycler view
@@ -98,9 +96,16 @@ public class MainActivity extends AppCompatActivity implements UpdateListAdapter
             }
         });
 
+        Button switchCity = (Button) findViewById(R.id.switchCity);
+        switchCity.setOnClickListener(new View.OnClickListener() {
 
-        longitudeLabel = (EditText) findViewById(R.id.longitudeLabel);
-        latitudeLabel = (EditText) findViewById(R.id.latitudeLabel);
+            @Override
+            public void onClick(View view) {
+                Intent startActivity = new Intent(MainActivity.this, StartActivity.class);
+                startActivity(startActivity);
+            }
+        });
+
     }
 
     private void listUpdateButtonClicked() {
