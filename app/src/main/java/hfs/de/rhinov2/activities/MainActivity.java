@@ -11,7 +11,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -36,7 +35,6 @@ public class MainActivity extends AppCompatActivity implements UpdateListAdapter
 
     private static final String BASE_URL = "http://pi@172.31.1.15:5000/de.hfs.rhino/";
     // List adapter
-    private LatLng coordinates;
     private UpdateListAdapter mAdapter;
 
     // Location locationUpdateButton
@@ -49,7 +47,6 @@ public class MainActivity extends AppCompatActivity implements UpdateListAdapter
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        coordinates = SingletonStorage.getInstance().getCoordinates();
         cityLabel = (EditText) findViewById(R.id.cityLabel);
         cityLabel.setText(STORAGE.getCity());
 
@@ -90,6 +87,7 @@ public class MainActivity extends AppCompatActivity implements UpdateListAdapter
 
             @Override
             public void onClick(View view) {
+                StartActivity.deletePreferences();
                 Intent startActivity = new Intent(MainActivity.this, StartActivity.class);
                 startActivity(startActivity);
             }
@@ -106,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements UpdateListAdapter
                 .build();
         UpdateRESTService service = retrofit.create(UpdateRESTService.class);
 
-        Call<JsonObject> updates = service.getUpdates(coordinates.longitude, coordinates.latitude);
+        Call<JsonObject> updates = service.getUpdates(STORAGE.getLng(), STORAGE.getLat());
         updates.enqueue(new Callback<JsonObject>() {
 
             @Override

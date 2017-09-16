@@ -1,7 +1,15 @@
 package hfs.de.rhinov2.activities;
 
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Criteria;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -21,35 +29,49 @@ public class StartActivity extends AppCompatActivity {
     private static final String TAG = "StartActivity";
     private PlaceAutocompleteFragment autocompleteFragment;
     //private Button locate;
+    public static final String prefpath = "myPrefernces";
+    static SharedPreferences preferences;
     private Button set;
+    private SingletonStorage store = SingletonStorage.getInstance();
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
-        autocompleteFragment = (PlaceAutocompleteFragment)
-                getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
 
-        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
-            @Override
-            public void onPlaceSelected(Place place) {
-                // TODO: Get info about the selected place.
-                autocompleteFragment.setText(place.getName());
-                SingletonStorage.getInstance().setCoordinates(place.getLatLng());
-                Log.i(TAG, "Place: " + place.getName());
-            }
+        if (preferences.contains("City") && preferences.contains("Latitude") &&preferences.contains("Longitude")) {
+            store.setCity(preferences.getString("City", null));
+            store.setLng((double) preferences.getFloat("Longitude", 0.0f));
+            store.setLat((double) preferences.getFloat("Latitude", 0.0f));
+            changeActivity();
+        } else {
 
-            @Override
-            public void onError(Status status) {
-                // TODO: Handle the error.
-                Log.i(TAG, "An error occurred: " + status);
-            }
+            deletePreferences();
+            autocompleteFragment = (PlaceAutocompleteFragment)
+                    getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+
+            autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+                @Override
+                public void onPlaceSelected(Place place) {
+                    // TODO: Get info about the selected place.
+                    autocompleteFragment.setText(place.getName());
+                    store.setCity(place.getName().toString());
+                    store.setLat(place.getLatLng().latitude);
+                    store.setLng(place.getLatLng().longitude);
+                    Log.i(TAG, "Place: " + place.getName());
+                }
+
+                @Override
+                public void onError(Status status) {
+                    // TODO: Handle the error.
+                    Log.i(TAG, "An error occurred: " + status);
+                }
 
 
-        });
+            });
 
-        //locate = (Button) findViewById(R.id.button4);
+            //locate = (Button) findViewById(R.id.button4);
         /*locate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -61,16 +83,33 @@ public class StartActivity extends AppCompatActivity {
             }
         });*/
 
-        set = (Button) findViewById(R.id.set);
-        set.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (SingletonStorage.getInstance().getCoordinates() != null) {
-                    Intent mainActivity = new Intent(StartActivity.this, MainActivity.class);
-                    startActivity(mainActivity);
+            preferences = getSharedPreferences(prefpath, Context.MODE_PRIVATE);
+            set = (Button) findViewById(R.id.set);
+            set.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (store.getCity() != null) {
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.putString("City", store.getCity());
+                        editor.putFloat("Latitude", (float) store.getLat());
+                        editor.putFloat("Longitude", (float) store.getLng());
+                        editor.commit();
+                        changeActivity();
+                    }
                 }
-            }
-        });
+            });
+        }
+    }
+
+    private void changeActivity() {
+        Intent mainActivity = new Intent(StartActivity.this, MainActivity.class);
+        startActivity(mainActivity);
+    }
+
+    public static void deletePreferences() {
+        //SharedPreferences toDelete = preferences.getSharedPreferences(prefpath, Context.MODE_PRIVATE);
+        //toDelete.edit().clear().commit();
+        preferences.edit().clear().commit();
     }
 
     /*public void getLocation() throws IOException {
