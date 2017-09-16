@@ -33,8 +33,9 @@
             android:layout_marginLeft="9dp"
             android:layout_marginStart="9dp"
             android:ems="10"
+            android:clickable="false"
             android:inputType="textPersonName"
-            android:textAppearance="@style/TextAppearance.AppCompat" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/mainRView"
