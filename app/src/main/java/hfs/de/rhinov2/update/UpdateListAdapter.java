@@ -44,7 +44,7 @@ public class UpdateListAdapter extends RecyclerView.Adapter<UpdateListAdapter.Vi
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         String title = mData.get(position).getTitle();
-        String desc = mData.get(position).getDesc();
+        String desc = mData.get(position).getDescription();
         holder.textViewTitle.setText(title);
         holder.textViewDesc.setText(desc);
     }

@@ -22,7 +22,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import hfs.de.rhinov2.R;
-import hfs.de.rhinov2.storage.CoordinateStorage;
+import hfs.de.rhinov2.storage.SingletonStorage;
 import hfs.de.rhinov2.update.Update;
 import hfs.de.rhinov2.update.UpdateListAdapter;
 import hfs.de.rhinov2.update.UpdateRESTService;
@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements UpdateListAdapter
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        coordinates = CoordinateStorage.coordinates;
+        coordinates = SingletonStorage.getInstance().getCoordinates();
         longitudeLabel = (EditText) findViewById(R.id.longitudeLabel);
         latitudeLabel = (EditText) findViewById(R.id.latitudeLabel);
         if (coordinates != null) {
@@ -127,16 +127,14 @@ public class MainActivity extends AppCompatActivity implements UpdateListAdapter
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
                 Toast.makeText(MainActivity.this, String.format("Update %s", "FAIL"), Toast.LENGTH_SHORT).show();
-
             }
-
         });
     }
 
     @Override
     public void onItemClick(View view, int position) throws IOException {
         Intent detailActivity = new Intent(MainActivity.this, DetailActivity.class);
-        startActivity(detailAcytivity);
 
+        startActivity(detailActivity);
     }
 }

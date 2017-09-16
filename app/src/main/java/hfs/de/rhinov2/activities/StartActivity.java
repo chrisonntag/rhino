@@ -20,7 +20,7 @@ import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 
 import hfs.de.rhinov2.R;
-import hfs.de.rhinov2.storage.CoordinateStorage;
+import hfs.de.rhinov2.storage.SingletonStorage;
 
 public class StartActivity extends AppCompatActivity {
 
@@ -33,7 +33,7 @@ public class StartActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_start2);
+        setContentView(R.layout.activity_start);
         autocompleteFragment = (PlaceAutocompleteFragment)
                 getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
 
@@ -42,7 +42,7 @@ public class StartActivity extends AppCompatActivity {
             public void onPlaceSelected(Place place) {
                 // TODO: Get info about the selected place.
                 autocompleteFragment.setText(place.getName());
-                CoordinateStorage.coordinates = place.getLatLng();
+                SingletonStorage.getInstance().setCoordinates(place.getLatLng());
                 Log.i(TAG, "Place: " + place.getName());
             }
 
