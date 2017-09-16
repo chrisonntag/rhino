@@ -42,15 +42,16 @@ public class MainActivity extends AppCompatActivity implements UpdateListAdapter
     // Location locationUpdateButton
     private EditText cityLabel;
 
+    private SingletonStorage STORAGE = SingletonStorage.getInstance();
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         coordinates = SingletonStorage.getInstance().getCoordinates();
         cityLabel = (EditText) findViewById(R.id.cityLabel);
-        if (coordinates != null) {
-            cityLabel.setText(String.format("Longitude: %s", coordinates.longitude));
-        }
+        cityLabel.setText(STORAGE.getCity());
 
         // Create recycler view
         RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.mainRView);

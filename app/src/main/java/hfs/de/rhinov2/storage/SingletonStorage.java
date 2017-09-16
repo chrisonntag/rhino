@@ -17,6 +17,10 @@ public class SingletonStorage {
     // coords
     private LatLng coordinates;
 
+    private double lat;
+    private double lng;
+    private String city;
+
     // threat data
     private String threatArea;
     private List<String> threatCategories;
