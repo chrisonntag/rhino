@@ -33,6 +33,7 @@ public class StartActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
+        preferences = getSharedPreferences(prefpath, Context.MODE_PRIVATE);
 
         if (preferences.contains("City") && preferences.contains("Latitude") &&preferences.contains("Longitude")) {
             store.setCity(preferences.getString("City", null));
@@ -77,7 +78,6 @@ public class StartActivity extends AppCompatActivity {
             }
         });*/
 
-            preferences = getSharedPreferences(prefpath, Context.MODE_PRIVATE);
             set = (Button) findViewById(R.id.set);
             set.setOnClickListener(new View.OnClickListener() {
                 @Override
