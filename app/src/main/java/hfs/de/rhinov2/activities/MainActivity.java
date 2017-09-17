@@ -9,7 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.JsonArray;
@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements UpdateListAdapter
     private UpdateListAdapter mAdapter;
 
     // Location locationUpdateButton
-    private EditText cityLabel;
+    private TextView cityLabel;
 
     private static final SingletonStorage STORAGE = SingletonStorage.getInstance();
 
@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements UpdateListAdapter
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        cityLabel = (EditText) findViewById(R.id.cityLabel);
+        cityLabel = (TextView) findViewById(R.id.cityLabel);
         cityLabel.setText(STORAGE.getCity());
 
         // Create recycler view
@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements UpdateListAdapter
         mRecyclerView.addItemDecoration(dividerItemDecoration);
 
         // Add main locationUpdateButton button
-        final FloatingActionButton listUpdateButton = (FloatingActionButton) findViewById(R.id.listUpdateButton);
+        final FloatingActionButton listUpdateButton = (FloatingActionButton) findViewById(R.id.refresh);
         listUpdateButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements UpdateListAdapter
             }
         });
 
-        Button switchCity = (Button) findViewById(R.id.switchCity);
+        FloatingActionButton switchCity = (FloatingActionButton) findViewById(R.id.swichCity);
         switchCity.setOnClickListener(new View.OnClickListener() {
 
             @Override
