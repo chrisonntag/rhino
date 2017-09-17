@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
@@ -91,6 +92,8 @@ public class StartActivity extends AppCompatActivity {
                         editor.putFloat("Longitude", (float) storage.getLng());
                         editor.commit();
                         changeActivity();
+                    } else {
+                        Toast.makeText(StartActivity.this, String.format("No location selected"), Toast.LENGTH_SHORT).show();
                     }
                 }
             });
