@@ -97,6 +97,7 @@ public class MainActivity extends AppCompatActivity implements UpdateListAdapter
             @Override
             public void onClick(View view) {
                 StartActivity.deletePreferences();
+                STORAGE.clearLocationData();
                 Intent startActivity = new Intent(MainActivity.this, StartActivity.class);
                 startActivity(startActivity);
             }
