@@ -29,6 +29,7 @@ public class StartActivity extends AppCompatActivity {
     static SharedPreferences preferences;
     private Button set;
     private SingletonStorage storage = SingletonStorage.getInstance();
+    private Place selected;
 
 
     @Override
@@ -54,9 +55,7 @@ public class StartActivity extends AppCompatActivity {
                 public void onPlaceSelected(Place place) {
                     // TODO: Get info about the selected place.
                     autocompleteFragment.setText(place.getName());
-                    storage.setCity(place.getName().toString());
-                    storage.setLat(place.getLatLng().latitude);
-                    storage.setLng(place.getLatLng().longitude);
+                    selected = place;
                     Log.i(TAG, "Place: " + place.getName());
                 }
 
@@ -85,11 +84,14 @@ public class StartActivity extends AppCompatActivity {
             set.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (storage.getCity() != null) {
+                    if (selected != null) {
+                        storage.setCity(selected.getName().toString());
+                        storage.setLat(selected.getLatLng().latitude);
+                        storage.setLng(selected.getLatLng().longitude);
                         SharedPreferences.Editor editor = preferences.edit();
                         editor.putString("City", storage.getCity());
-                        editor.putFloat("Latitude", (float) storage.getLat());
-                        editor.putFloat("Longitude", (float) storage.getLng());
+                        editor.putFloat("Latitude", (float) (double) storage.getLat());
+                        editor.putFloat("Longitude", (float) (double) storage.getLng());
                         editor.commit();
                         changeActivity();
                     } else {
