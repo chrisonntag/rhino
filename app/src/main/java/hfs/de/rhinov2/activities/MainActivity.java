@@ -2,6 +2,7 @@ package hfs.de.rhinov2.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -81,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements UpdateListAdapter
         mRecyclerView.addItemDecoration(dividerItemDecoration);
 
         // Add main locationUpdateButton button
-        final Button listUpdateButton = (Button) findViewById(R.id.listUpdateButton);
+        final FloatingActionButton listUpdateButton = (FloatingActionButton) findViewById(R.id.listUpdateButton);
         listUpdateButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
