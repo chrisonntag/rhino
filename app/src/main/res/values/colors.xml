@@ -9,6 +9,6 @@
     <color name="colorSeverity4">#0000FF</color>
     <color name="colorSeverityUnknown">#FFFFFF</color>
 
-    <color name="place_autocomplete_search_text">#FFFFFF</color>
+    <color name="place_autocomplete_search_text">#000000</color>
     <color name="place_autocomplete_search_hint">@android:color/secondary_text_light</color>
 </resources>

@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 
 import com.google.android.gms.common.api.Status;
@@ -28,7 +27,7 @@ public class StartActivity extends AppCompatActivity {
     public static final String prefpath = "myPrefernces";
     static SharedPreferences preferences;
     private Button set;
-    private SingletonStorage store = SingletonStorage.getInstance();
+    private SingletonStorage storage = SingletonStorage.getInstance();
 
 
     @Override
@@ -38,9 +37,9 @@ public class StartActivity extends AppCompatActivity {
         preferences = getSharedPreferences(prefpath, Context.MODE_PRIVATE);
 
         if (preferences != null && preferences.contains("City") && preferences.contains("Latitude") && preferences.contains("Longitude")) {
-            store.setCity(preferences.getString("City", null));
-            store.setLng((double) preferences.getFloat("Longitude", 0.0f));
-            store.setLat((double) preferences.getFloat("Latitude", 0.0f));
+            storage.setCity(preferences.getString("City", null));
+            storage.setLng((double) preferences.getFloat("Longitude", 0.0f));
+            storage.setLat((double) preferences.getFloat("Latitude", 0.0f));
             changeActivity();
         } else {
 
@@ -54,9 +53,9 @@ public class StartActivity extends AppCompatActivity {
                 public void onPlaceSelected(Place place) {
                     // TODO: Get info about the selected place.
                     autocompleteFragment.setText(place.getName());
-                    store.setCity(place.getName().toString());
-                    store.setLat(place.getLatLng().latitude);
-                    store.setLng(place.getLatLng().longitude);
+                    storage.setCity(place.getName().toString());
+                    storage.setLat(place.getLatLng().latitude);
+                    storage.setLng(place.getLatLng().longitude);
                     Log.i(TAG, "Place: " + place.getName());
                 }
 
@@ -85,11 +84,11 @@ public class StartActivity extends AppCompatActivity {
             set.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (store.getCity() != null) {
+                    if (storage.getCity() != null) {
                         SharedPreferences.Editor editor = preferences.edit();
-                        editor.putString("City", store.getCity());
-                        editor.putFloat("Latitude", (float) store.getLat());
-                        editor.putFloat("Longitude", (float) store.getLng());
+                        editor.putString("City", storage.getCity());
+                        editor.putFloat("Latitude", (float) storage.getLat());
+                        editor.putFloat("Longitude", (float) storage.getLng());
                         editor.commit();
                         changeActivity();
                     }
