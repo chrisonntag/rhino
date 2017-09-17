@@ -1,6 +1,7 @@
 package hfs.de.rhinov2.update;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,7 +53,7 @@ public class UpdateListAdapter extends RecyclerView.Adapter<UpdateListAdapter.Vi
 
     public void setEmpty() {
         mData.clear();
-        mData.add(new Update("No threats!", "no desc", R.color.colorSeverityUnknown));
+        mData.add(new Update("No threats!", "no desc", Color.TRANSPARENT));
         notifyDataSetChanged();
     }
 

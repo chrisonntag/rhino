@@ -1,6 +1,7 @@
 package hfs.de.rhinov2.activities;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -70,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements UpdateListAdapter
 
         // Add sample data
         List<Update> data = new ArrayList<>();
-        data.add(new Update("No danger yet", "Set your location and press update", R.color.colorSeverityUnknown));
+        data.add(new Update("No danger yet", "Set your location and press update", Color.TRANSPARENT));
         mAdapter = new UpdateListAdapter(this, data);
 
         mAdapter.setClickListener(this);
@@ -124,23 +125,24 @@ public class MainActivity extends AppCompatActivity implements UpdateListAdapter
                         String instructions = element.getAsJsonObject().get("instructions").getAsJsonArray().get(0).getAsString();
                         Integer severity = element.get("severity_level").getAsInt();
                         assert (severity > 0 && severity < 6);
-                        int color = R.color.colorSeverityUnknown;
+                        int color;
                         switch (severity) {
                             case 1:
-                                color = R.color.colorSeverity1;
+                                color = getResources().getColor(R.color.colorSeverity4);
                                 break;
                             case 2:
-                                color = R.color.colorSeverity2;
+                                color = getResources().getColor(R.color.colorSeverity3);
                                 break;
                             case 3:
-                                color = R.color.colorSeverity3;
+                                color = getResources().getColor(R.color.colorSeverity2);
                                 break;
                             case 4:
-                                color = R.color.colorSeverity4;
+                                color = getResources().getColor(R.color.colorSeverity1);
                                 break;
                             case 5:
                             default:
                                 System.out.println("unknown severity!");
+                                color = getResources().getColor(R.color.colorSeverityUnknown);
 
                         }
                         mAdapter.add(new Update(title, instructions, color));
