@@ -40,9 +40,6 @@ public class MainActivity extends AppCompatActivity implements UpdateListAdapter
     // Location locationUpdateButton
     private EditText cityLabel;
 
-    private SingletonStorage STORAGE = SingletonStorage.getInstance();
-
-
     SingletonStorage STORAGE = SingletonStorage.getInstance();
 
     // rest calls
@@ -108,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements UpdateListAdapter
 
     private void listUpdateButtonClicked() {
 
-        Call<JsonObject> updates = service.getUpdates(coordinates.latitude, coordinates.longitude);
+        Call<JsonObject> updates = service.getUpdates(STORAGE.getLat(), STORAGE.getLng());
         updates.enqueue(new Callback<JsonObject>() {
 
             @Override
