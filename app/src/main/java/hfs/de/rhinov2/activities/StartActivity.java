@@ -4,6 +4,7 @@ package hfs.de.rhinov2.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -45,6 +46,7 @@ public class StartActivity extends AppCompatActivity {
             deletePreferences();
             autocompleteFragment = (PlaceAutocompleteFragment)
                     getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+            autocompleteFragment.getView().setBackgroundColor(Color.WHITE);
 
             autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
                 @Override
