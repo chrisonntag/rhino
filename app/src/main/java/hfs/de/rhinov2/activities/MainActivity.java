@@ -35,7 +35,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity implements UpdateListAdapter.ItemClickListener {
 
-    private static final String BASE_URL = "http://pi@172.31.1.15/rhino/";
+    private static final String BASE_URL = "http://rhino2017.pythonanywhere.com/rhino/";
     // List adapter
     private UpdateListAdapter mAdapter;
 
@@ -102,6 +102,9 @@ public class MainActivity extends AppCompatActivity implements UpdateListAdapter
                 startActivity(startActivity);
             }
         });
+
+        // Load current information based on lat/lng specified in shared preferences
+        listUpdateButtonClicked();
 
     }
 
