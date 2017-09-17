@@ -34,7 +34,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity implements UpdateListAdapter.ItemClickListener {
 
-    private static final String BASE_URL = "http://rhino2017.pythonanywhere.com/rhino/";
+    private static final String BASE_URL = "http://172.31.1.60:5000/rhino/";
     // List adapter
     private UpdateListAdapter mAdapter;
 
@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity implements UpdateListAdapter
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
 
-                if(!response.body().has("endagered")){
+                if(!response.body().has("endangered")){
                     Toast.makeText(MainActivity.this, String.format("Update failed"), Toast.LENGTH_SHORT).show();
                     return;
                 }

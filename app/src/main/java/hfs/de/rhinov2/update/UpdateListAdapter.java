@@ -53,7 +53,7 @@ public class UpdateListAdapter extends RecyclerView.Adapter<UpdateListAdapter.Vi
 
     public void setEmpty() {
         mData.clear();
-        mData.add(new Update("No threats!", "no desc", Color.TRANSPARENT));
+        mData.add(new Update("Everything alright", "There are no reported threats in your area!", Color.TRANSPARENT));
         notifyDataSetChanged();
     }
 
