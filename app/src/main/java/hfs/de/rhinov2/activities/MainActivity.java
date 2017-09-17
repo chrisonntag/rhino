@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements UpdateListAdapter
     // Location locationUpdateButton
     private EditText cityLabel;
 
-    SingletonStorage STORAGE = SingletonStorage.getInstance();
+    private static final SingletonStorage STORAGE = SingletonStorage.getInstance();
 
     // rest calls
     Retrofit retrofit = new Retrofit.Builder()
@@ -165,12 +165,11 @@ public class MainActivity extends AppCompatActivity implements UpdateListAdapter
 
             STORAGE.setThreatArea(element.get("area_name").getAsString());
             //STORAGE.setThreatCategories(element.get("categories").getAgetAsString());
-            STORAGE.setThreatDesc(element.get("event_desc").getAsString());
-            STORAGE.setThreatArea(element.get("area_name").getAsString());
-            STORAGE.setThreatArea(element.get("area_name").getAsString());
-            STORAGE.setThreatArea(element.get("area_name").getAsString());
-            STORAGE.setThreatArea(element.get("area_name").getAsString());
-            STORAGE.setThreatArea(element.get("area_name").getAsString());
+            STORAGE.setThreatHeadline(element.get("headline").getAsString());
+            //STORAGE.setThreatInstructions(element.get("area_name").getAsString());
+            STORAGE.setThreatType(element.get("msg_type").getAsString());
+            STORAGE.setThreatSeverity(element.get("severity").getAsString());
+            STORAGE.setThreatSource(element.get("source").getAsString());
 
             startActivity(detailActivity);
         }

@@ -20,13 +20,11 @@ public class DetailActivity extends AppCompatActivity {
 
         setLabelText(R.id.textViewArea, storage.getThreatArea());
         //setLabelText(R.id.textViewCategory, storage.getThreatCategories());
-        setLabelText(R.id.textViewDesc, storage.getThreatDesc());
-        //setLabelText(R.id.textViewHeadline, storage.getThreatHeadline());
+        setLabelText(R.id.textViewHeadline, storage.getThreatHeadline());
         //setLabelText(R.id.textViewInstr, storage.getThreatInstructions());
-        //setLabelText(R.id.textViewType, storage.getThreatType());
-        //setLabelText(R.id.textViewSeverity, storage.getThreatSeverity());
-        //setLabelText(R.id.textViewSource, storage.getThreatSource());
-
+        setLabelText(R.id.textViewType, storage.getThreatType());
+        setLabelText(R.id.textViewSeverity, storage.getThreatSeverity());
+        setLabelText(R.id.textViewSource, storage.getThreatSource());
     }
     private void setLabelText(int id, String text){
         ((TextView) findViewById(id)).setText(text);
