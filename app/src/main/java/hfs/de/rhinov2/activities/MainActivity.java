@@ -163,8 +163,11 @@ public class MainActivity extends AppCompatActivity implements UpdateListAdapter
             Intent detailActivity = new Intent(MainActivity.this, DetailActivity.class);
             JsonObject element = alerts.get(position).getAsJsonObject();
 
+            Iterator<JsonElement> categoriesIterator = element.get("categories").getAsJsonArray().iterator();
+            Iterator<JsonElement> instructionsIterator = element.get("instructions").getAsJsonArray().iterator();
+
             STORAGE.setThreatArea(element.get("area_name").getAsString());
-            //STORAGE.setThreatCategories(element.get("categories").getAgetAsString());
+            //STORAGE.setThreatCategories("s);
             STORAGE.setThreatHeadline(element.get("headline").getAsString());
             //STORAGE.setThreatInstructions(element.get("area_name").getAsString());
             STORAGE.setThreatType(element.get("msg_type").getAsString());
