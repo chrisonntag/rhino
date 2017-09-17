@@ -19,9 +19,9 @@ public class DetailActivity extends AppCompatActivity {
         SingletonStorage storage = SingletonStorage.getInstance();
 
         setLabelText(R.id.textViewArea, storage.getThreatArea());
-        //setLabelText(R.id.textViewCategory, storage.getThreatCategories());
+        setLabelText(R.id.textViewCategory, storage.getThreatCategories());
         setLabelText(R.id.textViewHeadline, storage.getThreatHeadline());
-        //setLabelText(R.id.textViewInstr, storage.getThreatInstructions());
+        setLabelText(R.id.textViewInstr, storage.getThreatInstructions());
         setLabelText(R.id.textViewType, storage.getThreatType());
         setLabelText(R.id.textViewSeverity, storage.getThreatSeverity());
         setLabelText(R.id.textViewSource, storage.getThreatSource());
@@ -31,10 +31,11 @@ public class DetailActivity extends AppCompatActivity {
     }
     private void setLabelText(int id, List<String> textList){
         StringBuilder sb = new StringBuilder();
-        for(String text : textList){
-            sb.append(text);
+        for(int i = 0; i < textList.size() -1 ; i++) {
+            sb.append(textList.get(i));
+            sb.append(", ");
         }
+        sb.append(textList.get(textList.size()-1));
         setLabelText(id, sb.toString());
     }
-
 }

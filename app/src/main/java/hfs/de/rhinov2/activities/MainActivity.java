@@ -168,14 +168,22 @@ public class MainActivity extends AppCompatActivity implements UpdateListAdapter
             Iterator<JsonElement> instructionsIterator = element.get("instructions").getAsJsonArray().iterator();
 
             STORAGE.setThreatArea(element.get("area_name").getAsString());
-            //STORAGE.setThreatCategories("s);
+            STORAGE.setThreatCategories(iteratorToList(categoriesIterator));
             STORAGE.setThreatHeadline(element.get("headline").getAsString());
-            //STORAGE.setThreatInstructions(element.get("area_name").getAsString());
+            STORAGE.setThreatInstructions(iteratorToList(instructionsIterator));
             STORAGE.setThreatType(element.get("msg_type").getAsString());
             STORAGE.setThreatSeverity(element.get("severity").getAsString());
             STORAGE.setThreatSource(element.get("source").getAsString());
 
             startActivity(detailActivity);
         }
+    }
+
+    private static List<String> iteratorToList(Iterator<JsonElement> categoriesIterator) {
+        List<String> result = new ArrayList<>();
+        while(categoriesIterator.hasNext()){
+            result.add(categoriesIterator.next().getAsString());
+        }
+        return result;
     }
 }
