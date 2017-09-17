@@ -25,12 +25,6 @@ public class UpdateListAdapter extends RecyclerView.Adapter<UpdateListAdapter.Vi
         this.mData = data;
     }
 
-    public void removeLast(){
-        if(!mData.isEmpty()){
-            mData.remove(0);
-            this.notifyDataSetChanged();
-        }
-    }
 
     // inflates the row layout from xml when needed
     @Override
@@ -47,6 +41,7 @@ public class UpdateListAdapter extends RecyclerView.Adapter<UpdateListAdapter.Vi
         String desc = mData.get(position).getDescription();
         holder.textViewTitle.setText(title);
         holder.textViewDesc.setText(desc);
+        holder.itemView.setBackgroundColor(mData.get(position).getColor());
     }
 
     // total number of rows
@@ -57,7 +52,7 @@ public class UpdateListAdapter extends RecyclerView.Adapter<UpdateListAdapter.Vi
 
     public void setEmpty() {
         mData.clear();
-        mData.add(new Update("No threats!", "no desc"));
+        mData.add(new Update("No threats!", "no desc", R.color.colorSeverityUnknown));
         notifyDataSetChanged();
     }
 
@@ -78,10 +73,13 @@ public class UpdateListAdapter extends RecyclerView.Adapter<UpdateListAdapter.Vi
 
         public TextView textViewDesc;
 
+        public View itemView;
+
         public ViewHolder(View itemView) {
             super(itemView);
             textViewTitle = (TextView) itemView.findViewById(R.id.title);
             textViewDesc = (TextView) itemView.findViewById(R.id.desc);
+            this.itemView = itemView;
             itemView.setOnClickListener(this);
         }
 

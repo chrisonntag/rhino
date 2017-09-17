@@ -20,7 +20,6 @@ public class SingletonStorage {
     // threat data
     private String threatArea;
     private List<String> threatCategories;
-    private String threatDesc;
     private String threatHeadline;
     private List<String> threatInstructions;
     private String threatType;

@@ -2,6 +2,7 @@ package hfs.de.rhinov2.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -33,15 +34,23 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity implements UpdateListAdapter.ItemClickListener {
 
-    private static final String BASE_URL = "http://pi@172.31.1.15:5000/de.hfs.rhino/";
+    private static final String BASE_URL = "http://pi@172.31.1.15/rhino/";
     // List adapter
     private UpdateListAdapter mAdapter;
 
     // Location locationUpdateButton
     private EditText cityLabel;
 
-    private SingletonStorage STORAGE = SingletonStorage.getInstance();
+    private static final SingletonStorage STORAGE = SingletonStorage.getInstance();
 
+    // rest calls
+    Retrofit retrofit = new Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build();
+    UpdateRESTService service = retrofit.create(UpdateRESTService.class);
+
+    JsonArray alerts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements UpdateListAdapter
 
         // Add sample data
         List<Update> data = new ArrayList<>();
-        data.add(new Update("No danger yet", "Set your location and press update"));
+        data.add(new Update("No danger yet", "Set your location and press update", R.color.colorSeverityUnknown));
         mAdapter = new UpdateListAdapter(this, data);
 
         mAdapter.setClickListener(this);
@@ -73,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements UpdateListAdapter
         mRecyclerView.addItemDecoration(dividerItemDecoration);
 
         // Add main locationUpdateButton button
-        final Button listUpdateButton = (Button) findViewById(R.id.listUpdateButton);
+        final FloatingActionButton listUpdateButton = (FloatingActionButton) findViewById(R.id.listUpdateButton);
         listUpdateButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -96,15 +105,8 @@ public class MainActivity extends AppCompatActivity implements UpdateListAdapter
     }
 
     private void listUpdateButtonClicked() {
-        mAdapter.removeLast();
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        UpdateRESTService service = retrofit.create(UpdateRESTService.class);
-
-        Call<JsonObject> updates = service.getUpdates(STORAGE.getLng(), STORAGE.getLat());
+        Call<JsonObject> updates = service.getUpdates(STORAGE.getLat(), STORAGE.getLng());
         updates.enqueue(new Callback<JsonObject>() {
 
             @Override
@@ -113,17 +115,39 @@ public class MainActivity extends AppCompatActivity implements UpdateListAdapter
                 boolean endangered = response.body().get("endangered").getAsBoolean();
                 if (endangered) {
                     mAdapter.clear();
-                    JsonArray alerts = response.body().getAsJsonArray("alerts");
+                    alerts = response.body().getAsJsonArray("alerts");
                     Iterator<JsonElement> iterator = alerts.iterator();
                     while (iterator.hasNext()) {
-                        JsonElement element = iterator.next();
+                        JsonObject element = iterator.next().getAsJsonObject();
                         System.out.println(element.toString());
-                        String title = element.getAsJsonObject().get("event_desc").getAsString();
+                        String title = element.get("event_desc").getAsString();
                         String instructions = element.getAsJsonObject().get("instructions").getAsJsonArray().get(0).getAsString();
-                        mAdapter.add(new Update(title, instructions));
+                        Integer severity = element.get("severity_level").getAsInt();
+                        assert (severity > 0 && severity < 6);
+                        int color = R.color.colorSeverityUnknown;
+                        switch (severity) {
+                            case 1:
+                                color = R.color.colorSeverity1;
+                                break;
+                            case 2:
+                                color = R.color.colorSeverity2;
+                                break;
+                            case 3:
+                                color = R.color.colorSeverity3;
+                                break;
+                            case 4:
+                                color = R.color.colorSeverity4;
+                                break;
+                            case 5:
+                            default:
+                                System.out.println("unknown severity!");
+
+                        }
+                        mAdapter.add(new Update(title, instructions, color));
                     }
                 } else {
                     mAdapter.setEmpty();
+                    alerts = null;
                 }
             }
 
@@ -136,8 +160,30 @@ public class MainActivity extends AppCompatActivity implements UpdateListAdapter
 
     @Override
     public void onItemClick(View view, int position) throws IOException {
-        Intent detailActivity = new Intent(MainActivity.this, DetailActivity.class);
+        if (alerts != null) {
+            Intent detailActivity = new Intent(MainActivity.this, DetailActivity.class);
+            JsonObject element = alerts.get(position).getAsJsonObject();
 
-        startActivity(detailActivity);
+            Iterator<JsonElement> categoriesIterator = element.get("categories").getAsJsonArray().iterator();
+            Iterator<JsonElement> instructionsIterator = element.get("instructions").getAsJsonArray().iterator();
+
+            STORAGE.setThreatArea(element.get("area_name").getAsString());
+            STORAGE.setThreatCategories(iteratorToList(categoriesIterator));
+            STORAGE.setThreatHeadline(element.get("headline").getAsString());
+            STORAGE.setThreatInstructions(iteratorToList(instructionsIterator));
+            STORAGE.setThreatType(element.get("msg_type").getAsString());
+            STORAGE.setThreatSeverity(element.get("severity").getAsString());
+            STORAGE.setThreatSource(element.get("source").getAsString());
+
+            startActivity(detailActivity);
+        }
+    }
+
+    private static List<String> iteratorToList(Iterator<JsonElement> categoriesIterator) {
+        List<String> result = new ArrayList<>();
+        while(categoriesIterator.hasNext()){
+            result.add(categoriesIterator.next().getAsString());
+        }
+        return result;
     }
 }

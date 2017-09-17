@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">RhinoV2</string>
+    <string name="app_name">Rhino</string>
+    <string name="detail_area">Area</string>
 </resources>

@@ -11,8 +11,9 @@ import lombok.Getter;
 public class Update {
     private final String title;
     private final String description;
+    private final int color;
 
-    public Update(final String title, final String description){
+    public Update(final String title, final String description, int color){
         if (TextUtils.isEmpty(title)) {
             throw new IllegalArgumentException("title null or empty!");
         }
@@ -22,5 +23,6 @@ public class Update {
 
         this.title = title;
         this.description = description;
+        this.color = color;
     }
 }
