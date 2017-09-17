@@ -9,7 +9,6 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -116,6 +115,10 @@ public class MainActivity extends AppCompatActivity implements UpdateListAdapter
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
 
+                if(!response.body().has("endagered")){
+                    Toast.makeText(MainActivity.this, String.format("Update failed"), Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 boolean endangered = response.body().get("endangered").getAsBoolean();
                 if (endangered) {
                     mAdapter.clear();
@@ -158,7 +161,7 @@ public class MainActivity extends AppCompatActivity implements UpdateListAdapter
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
-                Toast.makeText(MainActivity.this, String.format("Update %s", "FAIL"), Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, String.format("Update failed"), Toast.LENGTH_SHORT).show();
             }
         });
     }
