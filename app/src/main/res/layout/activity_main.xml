@@ -58,12 +58,13 @@
 
         </android.support.v7.widget.RecyclerView>
 
-        <Button
-            android:id="@+id/listUpdateButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Update List" />
-
     </LinearLayout>
+    <android.support.design.widget.FloatingActionButton
+            android:layout_width="53dp"
+            android:layout_height="64dp"
+            android:clickable="true"
+            app:fabSize="mini" app:srcCompat="@android:drawable/ic_popup_sync"
+            android:id="@+id/listUpdateButton" tools:layout_editor_absoluteY="472dp"
+            tools:layout_editor_absoluteX="347dp"/>
 
 </android.support.constraint.ConstraintLayout>
